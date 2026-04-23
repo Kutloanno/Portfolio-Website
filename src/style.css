@@ -1,0 +1,11 @@
+body {
+  background-color: #060609;
+  color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+.main-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
