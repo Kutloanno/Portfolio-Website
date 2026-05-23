@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kyoto Music Showcase | Kutloano</title>
+  <meta name="description" content="Dedicated showcase page for Kyoto Music - high-fidelity full-stack serverless audio streaming web application.">
+
+  <link rel="stylesheet" href="src/style.css">
+  
+  <script defer src="src/main.js"></script>
+</head>
+<body>
+
+  <!-- theme toggle -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+    </svg>
+    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+
+  <!-- back -->
+  <a href="index.html" class="back-button" aria-label="Go back home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </a>
+
+  <div class="dotted-background"></div>
+  <div class="radial-overlay"></div>
+
+  <main id="kyoto-modal" class="showcase-container project-modal active" style="position: relative; transform: none; opacity: 1; pointer-events: auto; background: transparent; backdrop-filter: none; overflow-y: visible; height: auto;">
+
+    <section class="gallery-scroll-viewport" aria-label="Kyoto Music Screenshot Gallery">
+      <div class="gallery-scroll">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171639.png" alt="Kyoto Music Player Interface">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171739.png" alt="Kyoto Music Streaming Queue">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171824.png" alt="Kyoto Music Album Art Display">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171843.png" alt="Kyoto Music Artist Dashboard">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171920.png" alt="Kyoto Music Merch Checkout">
+        <img src="assests/Kyoto Music screenshots/Screenshot 2026-05-28 171931.png" alt="Kyoto Music Responsive Ticket Sales">
+      </div>
+    </section>
+
+    <div class="gallery-progress-track">
+      <div class="gallery-progress-bar"></div>
+    </div>
+
+    <header class="showcase-header">
+      <div class="showcase-header-left">
+        
+        <img src="assests/kyoto-icon.jpg" alt="Kyoto Music App Icon" class="showcase-icon">
+        <h2 class="showcase-title">Kyoto Music</h2>
+      </div>
+      
+      <a href="https://kyotomusic.app" target="_blank" rel="noopener noreferrer" class="showcase-button">
+        <span>Visit</span>
+        
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </a>
+    </header>
+
+    <article class="showcase-desc">
+      <p>
+        Kyoto Music is a high-fidelity web application built on Spring Boot and Java. The backend handles all routing, security interceptors, controller mappings, and transactional mailing, while the frontend is dynamically rendered server-side using Thymeleaf coupled with modern, responsive vanilla CSS. Engineered to support secure merchandise payment processing and high-volume media streaming at serverless edge speeds.
+      </p>
+    </article>
+
+    <footer class="tech-container">
+      <span class="tech-pill">
+        <img src="https://cdn.simpleicons.org/springboot/6DB33F" alt="Spring Boot logo">
+        <span>Spring Boot</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo">
+        <span>Thymeleaf</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="Cloudflare logo">
+        <span>Cloudflare D1</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="Cloudflare logo">
+        <span>Cloudflare R2</span>
+      </span>
+      <span class="tech-pill">
+        <img src="assests/paystack.svg" alt="Paystack logo">
+        <span>Paystack</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo">
+        <span>JavaMailSender</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.simpleicons.org/apachemaven/C3022F" alt="Apache Maven logo">
+        <span>Maven</span>
+      </span>
+      <span class="tech-pill">
+        <img src="https://cdn.simpleicons.org/render/46E3B7" alt="Render logo">
+        <span>Render</span>
+      </span>
+    </footer>
+
+    <section class="massive-video-container">
+      <video class="massive-showcase-video" autoplay loop muted playsinline>
+        <source src="assests/Kyoto Music screenshots/Kyoto Music video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+
+    <!-- qna -->
+    <div class="qna-container">
+      
+      <div class="qna-section">
+        <div class="qna-row question">
+          <img src="assests/kyoto-icon.jpg" alt="Kyoto Music App Icon" class="qna-avatar app-logo">
+          <div class="qna-content">
+            <h4>What’s under Kyoto Music’s hood? Which technologies were used and why did you choose them?</h4>
+          </div>
+        </div>
+        <div class="qna-row answer">
+          <img src="assests/me-icon-transparent.jpg" alt="About Me Profile Icon" class="qna-avatar profile-pic">
+          <div class="qna-content">
+            <p>Kyoto Music is a high-fidelity web application built on <strong>Spring Boot</strong> and <strong>Java</strong>. The backend handles all routing, security interceptors, controller mappings, and transactional mailing, while the frontend is dynamically rendered server-side using <strong>Thymeleaf</strong> coupled with modern, responsive vanilla CSS.</p>
+            <p>We wanted an architecture that was robust enough for secure payment processing and high-volume media streaming, yet lightweight and fast to scale globally. By choosing to build Kyoto Music around <strong>Cloudflare's</strong> modern serverless edge architecture, we avoided bloated database servers and high hosting overhead.</p>
+            <p>All transactional and catalog data (including listener profiles, playlists, artist statistics, merchandise stock, and ticket transactions) is stored in <strong>Cloudflare D1</strong>—a serverless edge database built on SQLite. For media, instead of storing heavy audio files and high-res cover art on the web server, everything is hosted on <strong>Cloudflare R2</strong> object storage. This ensures lightning-fast streaming speeds for listeners, zero egress fee expenses, and seamless uploads for artists.</p>
+            <p>Payments for merchandise and show tickets are handled safely via <strong>Paystack</strong>, and transactional receipts are delivered securely via <strong>JavaMailSender</strong>. The entire setup compiles with <strong>Maven</strong> and deploys automatically to <strong>Render</strong> directly from Git.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tool stack -->
+    <div class="tool-cards-list">
+      
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.simpleicons.org/springboot/6DB33F" alt="Spring Boot logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Spring Boot</span>
+          <span class="tool-card-desc">Enterprise Java framework powering the core server, routing, and APIs</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Thymeleaf</span>
+          <span class="tool-card-desc">Modern server-side Java template engine used to dynamically render the user interface</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="Cloudflare logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Cloudflare D1</span>
+          <span class="tool-card-desc">Serverless edge SQL database running on SQLite for ultra-fast, globally distributed data storage</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="Cloudflare logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Cloudflare R2</span>
+          <span class="tool-card-desc">Fully S3-compatible serverless object storage for hosting audio files and graphics with zero egress fees</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="assests/paystack.svg" alt="Paystack logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Paystack</span>
+          <span class="tool-card-desc">Secure, modern payment gateway integration for buying merchandise and concert tickets</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">JavaMailSender</span>
+          <span class="tool-card-desc">Transactional email service for delivering purchase receipts, sales notifications, and door tickets</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.simpleicons.org/apachemaven/C3022F" alt="Apache Maven logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Maven</span>
+          <span class="tool-card-desc">Build automation and dependency management tool for clean, reproducible compilations</span>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-card-icon">
+          <img src="https://cdn.simpleicons.org/render/46E3B7" alt="Render logo">
+        </div>
+        <div class="tool-card-info">
+          <span class="tool-card-name">Render</span>
+          <span class="tool-card-desc">Cloud hosting platform used for automated Git deployments, environment management, and scale</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
