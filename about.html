@@ -4,17 +4,500 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Me | Infinite Canvas</title>
+  <meta name="description" content="Spatial infinite canvas about Moletse K., software architect and guitarist.">
+
   <link rel="stylesheet" href="src/style.css">
+  
   <style>
-    html, body { overflow: hidden; width: 100vw; height: 100vh; margin: 0; }
-    .spatial-canvas { width: 4000px; height: 4000px; position: absolute; }
+    /* Viewport Lock */
+    html, body {
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      background-color: #060609;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body.light-theme {
+      background-color: #f7f7fa;
+    }
+
+    /* Spatial Canvas Viewport */
+    .spatial-viewport {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+    }
+
+    .spatial-viewport:active {
+      cursor: grabbing;
+    }
+
+    /* The Massive Canvas Board */
+    .spatial-canvas {
+      width: 4000px;
+      height: 4000px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      will-change: transform;
+    }
+
+    body.light-theme .spatial-canvas {
+      background-image: radial-gradient(rgba(15, 23, 42, 0.06) 1.2px, transparent 1.2px);
+    }
+
+    /* Floating Sleek Glassmorphism Cards */
+    .canvas-node {
+      position: absolute;
+      width: 330px;
+      background: rgba(10, 10, 15, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      color: #f3f4f6;
+    }
+
+    body.light-theme .canvas-node {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      color: #000000;
+    }
+
+    .canvas-node:hover {
+      transform: translate(-50%, -50%) translateY(-5px) scale(1.02);
+      border-color: rgba(236, 72, 153, 0.25);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5), 0 0 20px rgba(236, 72, 153, 0.1);
+    }
+
+    body.light-theme .canvas-node:hover {
+      border-color: rgba(79, 70, 229, 0.25);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), 0 0 20px rgba(79, 70, 229, 0.1);
+    }
+
+    /* Node-specific contents styling */
+    .canvas-node h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .canvas-node p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    .canvas-node p:last-child {
+      margin-bottom: 0;
+    }
+
+    .node-subtitle {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* Profile Card Layout */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .profile-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .profile-title-block h3 {
+      margin: 0;
+    }
+
+    /* Specific Node Positions */
+    #node-profile {
+      top: 50%;
+      left: 50%;
+      width: 420px;
+      border-color: rgba(236, 72, 153, 0.15);
+    }
+
+    #node-workshop {
+      top: 40%;
+      left: 70%;
+      border-color: rgba(59, 130, 246, 0.15);
+    }
+
+    #node-offscreen {
+      top: 60%;
+      left: 30%;
+      border-color: rgba(16, 185, 129, 0.15);
+    }
+
+    /* Custom Tech Stack Tags */
+    .tech-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .tech-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 99px;
+      color: var(--text-primary);
+    }
+
+    body.light-theme .tech-tag {
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    /* Go Home Floating Button */
+    .hud-back-btn {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      background: rgba(10, 10, 15, 0.8);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px 22px;
+      border-radius: 99px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, border-color 0.2s;
+    }
+
+    body.light-theme .hud-back-btn {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .hud-back-btn:hover {
+      transform: translateY(-1.5px);
+      border-color: var(--text-primary);
+    }
+
+    .hud-back-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    /* Spatial Canvas HUD Navigation Controls */
+    .hud-navigation {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 10, 15, 0.8);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px 22px;
+      border-radius: 999px;
+      z-index: 1000;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    body.light-theme .hud-navigation {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .hud-item {
+      background: none;
+      border: none;
+      color: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s, transform 0.2s;
+      outline: none;
+    }
+
+    .hud-item:hover {
+      color: var(--text-primary);
+      transform: translateY(-0.5px);
+    }
+
+    .hud-item.active {
+      color: var(--text-primary);
+    }
+
+    .hud-spacer {
+      width: 1px;
+      height: 12px;
+      background: var(--border-color);
+    }
   </style>
 </head>
 <body>
+
+  <!-- theme toggle -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+    </svg>
+    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
+
+  <!-- back to main -->
+  <a href="index.html" class="hud-back-btn">
+    <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    <span>Home</span>
+  </a>
+
   <div class="spatial-viewport" id="spatial-viewport">
+    
+    <!-- canvas -->
     <div class="spatial-canvas" id="spatial-canvas">
-      <h3>Moletse K.</h3>
+      
+      <!-- profile card -->
+      <section class="canvas-node" id="node-profile">
+        <div class="profile-header">
+          <img src="assests/me-icon-transparent.jpg" alt="Kutloano profile picture" class="profile-avatar">
+          <div class="profile-title-block">
+            <span class="node-subtitle">Software Architect</span>
+            <h3>Moletse K.</h3>
+          </div>
+        </div>
+        <p>
+          I'm Kutloano Moletse, a Computer Science student at the Tshwane University of Technology. My coding journey started back in high school (circa 2019) trying to hack together video games.
+        </p>
+        <p>
+          Today, I channel that energy into crafting software with beautiful, simple designs. I have an almost obsessive eye for detail—if a pixel is out of place, I probably won't sleep.
+        </p>
+      </section>
+
+      <!-- tech workshop -->
+      <section class="canvas-node" id="node-workshop">
+        <span class="node-subtitle">Platform Engine</span>
+        <h3>The Workshop</h3>
+        <p>
+          My primary technologies and toolkits for structural and reactive backend systems:
+        </p>
+        <div class="tech-tag-list">
+          <span class="tech-tag">Java</span>
+          <span class="tech-tag">Spring Boot</span>
+          <span class="tech-tag">Kotlin</span>
+          <span class="tech-tag">Jetpack Compose</span>
+          <span class="tech-tag">Android SDK</span>
+          <span class="tech-tag">SQL (D1 SQLite)</span>
+          <span class="tech-tag">Cloudflare Edge</span>
+          <span class="tech-tag">Maven</span>
+        </div>
+      </section>
+
+      <!-- hobbies -->
+      <section class="canvas-node" id="node-offscreen">
+        <span class="node-subtitle">Life outside IDE</span>
+        <h3>Off-Screen</h3>
+        <p>
+          When I'm away from the IDE, I'm deep into my own Malcolm Gladwell experiment: chasing 10,000 hours on the guitar (specifically dialing in tones on a Thinline Telecaster). I'm also heavily exploring the future of DeFi and crypto.
+        </p>
+      </section>
+
     </div>
   </div>
+
+  <!-- HUD nav -->
+  <nav class="hud-navigation">
+    <button class="hud-item" onclick="focusNode('workshop')">The Workshop</button>
+    <div class="hud-spacer"></div>
+    <button class="hud-item" onclick="focusNode('profile')">Moletse (Center)</button>
+    <div class="hud-spacer"></div>
+    <button class="hud-item" onclick="focusNode('offscreen')">Off-Screen</button>
+  </nav>
+
+  <script>
+    // theme toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+      localStorage.setItem('theme', currentTheme);
+    });
+
+    // drag & inertia
+    const viewport = document.getElementById('spatial-viewport');
+    const canvas = document.getElementById('spatial-canvas');
+
+    let targetX = (window.innerWidth - 4000) / 2;
+    let targetY = (window.innerHeight - 4000) / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    let isDragging = false;
+    let startPointerX = 0;
+    let startPointerY = 0;
+    let startCanvasX = currentX;
+    let startCanvasY = currentY;
+
+    // mouse/touch handlers
+    viewport.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    viewport.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+
+    function onPointerDown(e) {
+      // ignore inside cards
+      if (e.target.closest('.canvas-node') && !e.target.classList.contains('canvas-node')) {
+        return;
+      }
+      isDragging = true;
+      const pointer = e.touches ? e.touches[0] : e;
+      startPointerX = pointer.clientX;
+      startPointerY = pointer.clientY;
+      startCanvasX = targetX;
+      startCanvasY = targetY;
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      
+      // prevent bounce
+      if (e.cancelable) e.preventDefault();
+
+      const pointer = e.touches ? e.touches[0] : e;
+      const dx = pointer.clientX - startPointerX;
+      const dy = pointer.clientY - startPointerY;
+
+      targetX = startCanvasX + dx;
+      targetY = startCanvasY + dy;
+
+      // clamp bounds
+      const minX = window.innerWidth - 4000;
+      const maxX = 0;
+      const minY = window.innerHeight - 4000;
+      const maxY = 0;
+
+      targetX = Math.max(minX, Math.min(maxX, targetX));
+      targetY = Math.max(minY, Math.min(maxY, targetY));
+    }
+
+    function onPointerUp() {
+      isDragging = false;
+    }
+
+    // loop
+    function lerpLoop() {
+      currentX += (targetX - currentX) * 0.15; 
+      currentY += (targetY - currentY) * 0.15;
+
+      canvas.style.transform = `translate(${currentX}px, ${currentY}px)`;
+      requestAnimationFrame(lerpLoop);
+    }
+    lerpLoop();
+
+    // handle resize
+    window.addEventListener('resize', () => {
+      if (!isDragging) {
+        
+        targetX = Math.max(window.innerWidth - 4000, Math.min(0, targetX));
+        targetY = Math.max(window.innerHeight - 4000, Math.min(0, targetY));
+      }
+    });
+
+    // HUD actions
+    function focusNode(nodeName) {
+      const minX = window.innerWidth - 4000;
+      const minY = window.innerHeight - 4000;
+
+      let nodeX = 2000;
+      let nodeY = 2000;
+
+      if (nodeName === 'profile') {
+        nodeX = 2000;
+        nodeY = 2000;
+      } else if (nodeName === 'workshop') {
+        nodeX = 2800; 
+        nodeY = 1600; 
+      } else if (nodeName === 'offscreen') {
+        nodeX = 1200; 
+        nodeY = 2400; 
+      }
+
+      targetX = window.innerWidth / 2 - nodeX;
+      targetY = window.innerHeight / 2 - nodeY;
+
+      targetX = Math.max(minX, Math.min(0, targetX));
+      targetY = Math.max(minY, Math.min(0, targetY));
+
+      // active tab styles
+      document.querySelectorAll('.hud-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('onclick').includes(nodeName)) {
+          item.classList.add('active');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
