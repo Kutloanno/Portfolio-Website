@@ -1140,6 +1140,31 @@ body.light-theme .project-modal {
   fill: none;
 }
 
+.showcase-header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.showcase-button img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+}
+
+.showcase-button:hover img {
+  filter: invert(1);
+}
+
+body.light-theme .showcase-button img {
+  filter: invert(1);
+}
+
+body.light-theme .showcase-button:hover img {
+  filter: none;
+}
+
 /* Showcase Description */
 .showcase-desc {
   font-family: 'Inter', sans-serif;
