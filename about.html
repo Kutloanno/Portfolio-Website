@@ -7,6 +7,7 @@
   <meta name="description" content="Spatial infinite canvas about Moletse K., software architect and guitarist.">
 
   <link rel="stylesheet" href="src/style.css">
+  <script defer src="src/main.js"></script>
   
   <style>
     /* Viewport Lock */
@@ -368,20 +369,6 @@
   </nav>
 
   <script>
-    // theme toggle
-    const themeToggleBtn = document.getElementById('theme-toggle');
-
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-theme');
-    }
-
-    themeToggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('light-theme');
-      const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-      localStorage.setItem('theme', currentTheme);
-    });
-
     // drag & inertia
     const viewport = document.getElementById('spatial-viewport');
     const canvas = document.getElementById('spatial-canvas');
