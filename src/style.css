@@ -678,6 +678,12 @@ body.light-theme .theme-toggle .sun-icon { display: none; }
   z-index: 2;
 }
 
+.app-icon:has(.fret-icon-img)::before,
+.app-icon:has(.kyoto-icon-img)::before,
+.app-icon:has(.about-me-icon-img)::before {
+  display: none;
+}
+
 /* Global Blur: Smooth focus blur for background text/heading on hover */
 .workshop-heading,
 .intro-container {
