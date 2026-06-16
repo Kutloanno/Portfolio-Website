@@ -670,9 +670,14 @@ body.light-theme .theme-toggle .sun-icon { display: none; }
   max-height: none !important;
   object-fit: cover !important;
   border-radius: inherit !important; 
+  clip-path: inset(0 round 28.8px) !important;
   margin: 0 !important;
   padding: 0 !important;
   z-index: 2 !important;
+}
+
+.solid-icon > .fret-icon-img {
+  transform: scale(1.175) !important;
 }
 
 /* Global Blur: Smooth focus blur for background text/heading on hover */
