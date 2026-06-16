@@ -652,9 +652,15 @@ body.light-theme .theme-toggle .sun-icon { display: none; }
   stroke: url(#gradient-active); /* fallback or handled via inline stroke styling */
 }
 
-.app-icon .fret-icon-img,
-.app-icon .kyoto-icon-img,
-.app-icon .about-me-icon-img {
+.solid-icon {
+  background: #000000 !important;
+}
+
+.solid-icon::before {
+  display: none !important;
+}
+
+.solid-icon > img {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
@@ -666,13 +672,7 @@ body.light-theme .theme-toggle .sun-icon { display: none; }
   border-radius: inherit !important; 
   margin: 0 !important;
   padding: 0 !important;
-  z-index: 2;
-}
-
-.app-icon:has(.fret-icon-img)::before,
-.app-icon:has(.kyoto-icon-img)::before,
-.app-icon:has(.about-me-icon-img)::before {
-  display: none;
+  z-index: 2 !important;
 }
 
 /* Global Blur: Smooth focus blur for background text/heading on hover */
