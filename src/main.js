@@ -1,4 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {
+// fail-proof initialization wrapper
+function initPortfolio() {
+  console.log("Initializing portfolio scripts...");
+  
   // theme switcher
   const themeToggleBtn = document.getElementById('theme-toggle');
   
@@ -61,25 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
       particle.style.zIndex = '9999';
       particle.style.opacity = '1';
 
-      // Randomize path: shooting down & right (45 +/- 35 degrees)
       const angle = (45 + (Math.random() - 0.5) * 70) * Math.PI / 180;
-      const distance = 80 + Math.random() * 180; // 80px to 260px
+      const distance = 80 + Math.random() * 180;
       const targetX = Math.cos(angle) * distance;
       const targetY = Math.sin(angle) * distance;
       const rotation = (Math.random() - 0.5) * 720;
-      const duration = 0.8 + Math.random() * 0.7; // 0.8s to 1.5s
+      const duration = 0.8 + Math.random() * 0.7;
 
       particle.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.8, 0.3, 1), opacity ${duration}s cubic-bezier(0.5, 0, 0.7, 1)`;
 
       document.body.appendChild(particle);
 
-      // Trigger transition next frame
       requestAnimationFrame(() => {
         particle.style.transform = `translate(${targetX}px, ${targetY}px) rotate(${rotation}deg)`;
         particle.style.opacity = '0';
       });
 
-      // Clean up after animation complete
       setTimeout(() => {
         particle.remove();
       }, duration * 1000);
@@ -111,4 +111,213 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupModal('fret-trigger', 'fret-modal', 'fret-modal-close');
   setupModal('kyoto-trigger', 'kyoto-modal', 'kyoto-modal-close');
-});
+
+  // Running character and typewriter setup
+  const charCanvas = document.getElementById('character-canvas');
+  const charArea = document.getElementById('character-area');
+  const typingTextEl = document.getElementById('typing-text');
+
+  if (charCanvas && charArea && typingTextEl) {
+    console.log("Animation components loaded successfully!");
+    
+    const textToType = typingTextEl.textContent.trim();
+    typingTextEl.textContent = ''; // Clear heading text immediately for typewriter
+    
+    // Create and configure video element
+    const video = document.createElement('video');
+    video.src = 'assests/running.mp4';
+    video.muted = true;
+    video.playsInline = true;
+    video.autoplay = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.className = 'hidden-video';
+    document.body.appendChild(video);
+
+    const ctx = charCanvas.getContext('2d');
+    charCanvas.width = 480;
+    charCanvas.height = 270;
+
+    let hasStartedAnimation = false;
+    let typingStarted = false;
+    let isLooping = false;
+    let isAnimationComplete = false;
+
+    function startLoop() {
+      if (!isLooping) {
+        console.log("Video started playing. Beginning animation rendering loop...");
+        isLooping = true;
+        requestAnimationFrame(drawFrame);
+      }
+    }
+
+    // Safety fallback timeout: if the video doesn't start, force the animation and typing
+    let fallbackTimeout;
+    function setFallback() {
+      clearTimeout(fallbackTimeout);
+      fallbackTimeout = setTimeout(() => {
+        if (!hasStartedAnimation) {
+          console.warn("Video play timeout fallback triggered.");
+          charArea.classList.add('animating');
+          hasStartedAnimation = true;
+        }
+        if (!typingStarted) {
+          typingStarted = true;
+          startTypewriter();
+        }
+      }, 5000);
+    }
+
+    // Drawing loop
+    function drawFrame() {
+      if (video.ended) {
+        console.log("Video ended. Render stopped, freezing on final frame.");
+        ctx.drawImage(video, 0, 0, charCanvas.width, charCanvas.height);
+        chromaKey();
+        return;
+      }
+
+      // If video is seeking or not ready, clear canvas to prevent old frames from showing
+      if (video.seeking || video.readyState < 2) {
+        ctx.clearRect(0, 0, charCanvas.width, charCanvas.height);
+      } else {
+        // Start horizontal animation
+        if (!hasStartedAnimation) {
+          console.log("Starting horizontal translation animation.");
+          charArea.classList.add('animating');
+          hasStartedAnimation = true;
+        }
+
+        ctx.drawImage(video, 0, 0, charCanvas.width, charCanvas.height);
+        chromaKey();
+
+        // Start typing at 8.2 seconds (7.2s when fully sat down + 1s delay)
+        if (video.currentTime >= 8.2 && !typingStarted) {
+          console.log("Character is seated. Starting typewriter heading animation.");
+          typingStarted = true;
+          startTypewriter();
+        }
+      }
+
+      requestAnimationFrame(drawFrame);
+    }
+
+    function chromaKey() {
+      const imgData = ctx.getImageData(0, 0, charCanvas.width, charCanvas.height);
+      const data = imgData.data;
+      
+      // Select top-left pixel as key color, default to video background black (0, 0, 0)
+      let keyR = data[0];
+      let keyG = data[1];
+      let keyB = data[2];
+      
+      if (keyR === 0 && keyG === 0 && keyB === 0) {
+        keyR = 0;
+        keyG = 0;
+        keyB = 0;
+      }
+      
+      const tolerance = 20; // Tight tolerance to prevent keying out character dark details (hair, eyes)
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i+1];
+        const b = data[i+2];
+
+        // Euclidean color distance
+        const dist = Math.sqrt(
+          (r - keyR) ** 2 +
+          (g - keyG) ** 2 +
+          (b - keyB) ** 2
+        );
+
+        if (dist < tolerance) {
+          data[i+3] = 0; // Transparent
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    }
+
+    // Typewriter logic
+    function startTypewriter() {
+      let charIndex = 0;
+      const speed = 75; // Type speed in ms per letter
+
+      function type() {
+        if (charIndex < textToType.length) {
+          typingTextEl.textContent += textToType.charAt(charIndex);
+          charIndex++;
+          setTimeout(type, speed + (Math.random() - 0.5) * 35); // organic natural typing rhythm
+        } else {
+          console.log("Typing completed.");
+          // Set animation as complete and make character clickable to replay
+          isAnimationComplete = true;
+          charArea.classList.add('complete');
+          console.log("Heading animation finished. Character is now clickable to replay.");
+        }
+      }
+      type();
+    }
+
+    // Click to replay logic
+    charArea.addEventListener('click', () => {
+      if (isAnimationComplete) {
+        console.log("Replaying character and heading animations (Hard Reset)...");
+        isAnimationComplete = false;
+        isLooping = false; // Fix: Allow the render loop to restart
+        charArea.classList.remove('complete');
+        
+        // Fix: Instantly erase the sitting frame
+        ctx.clearRect(0, 0, charCanvas.width, charCanvas.height);
+
+        // 1. Reset the Video: Set video.currentTime = 0; and immediately call video.play();
+        video.currentTime = 0;
+        video.play().catch(err => console.error("Playback failed on replay", err));
+        
+        // 2. Reset the Typewriter: Clear heading container and reset typing state boolean
+        typingTextEl.innerHTML = '';
+        typingStarted = false;
+        
+        // 3. Force CSS Reflow: Remove animation from character container, trigger reflow, and reapply it
+        charArea.classList.remove('animating');
+        charArea.style.animation = 'none';
+        void charArea.offsetWidth; // Trigger reflow
+        charArea.style.animation = 'runAcross 9.01s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+        hasStartedAnimation = true;
+        
+        // Reset fallback timeout
+        setFallback();
+      }
+    });
+
+    video.addEventListener('playing', () => {
+      clearTimeout(fallbackTimeout);
+      startLoop();
+    });
+
+    video.addEventListener('play', startLoop);
+
+    // Trigger video playback
+    setFallback();
+    video.play().then(startLoop).catch(err => {
+      console.warn("Autoplay blocked. Waiting for click interaction to start.", err);
+      const playFallback = () => {
+        video.play().then(() => {
+          clearTimeout(fallbackTimeout);
+          startLoop();
+          window.removeEventListener('click', playFallback);
+          window.removeEventListener('touchstart', playFallback);
+        });
+      };
+      window.addEventListener('click', playFallback);
+      window.addEventListener('touchstart', playFallback);
+    });
+  }
+}
+
+// Fail-proof readyState listener wrapper
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortfolio);
+} else {
+  initPortfolio();
+}
