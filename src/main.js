@@ -313,6 +313,47 @@ function initPortfolio() {
       window.addEventListener('touchstart', playFallback);
     });
   }
+
+  // GitHub Live Commits Widget
+  const commitList = document.getElementById('commit-list');
+  if (commitList) {
+    fetch('https://api.github.com/users/Kutloanno/events/public')
+      .then(response => response.json())
+      .then(data => {
+        // Filter for push events
+        const pushes = data.filter(event => event.type === 'PushEvent');
+        commitList.innerHTML = ''; // Clear loading text
+        
+        if (pushes.length === 0) {
+          commitList.innerHTML = '<li class="commit-item">No recent activity.</li>';
+          return;
+        }
+
+        // Grab the 3 most recent commits
+        let commitsAdded = 0;
+        for (const push of pushes) {
+          if (commitsAdded >= 3) break;
+          
+          const repoName = push.repo.name.split('/')[1] || 'repo'; // Get just the repo name
+          const commits = push.payload.commits || [];
+          
+          for (const commit of commits) {
+            if (commitsAdded >= 3) break;
+            
+            const li = document.createElement('li');
+            li.className = 'commit-item';
+            // Format: repo-name: commit message
+            li.innerHTML = `<span class="commit-repo">${repoName}</span>: <span class="commit-msg">${commit.message}</span>`;
+            commitList.appendChild(li);
+            commitsAdded++;
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch GitHub commits:', err);
+        commitList.innerHTML = '<li class="commit-item">Offline: Activity hidden.</li>';
+      });
+  }
 }
 
 // Fail-proof readyState listener wrapper

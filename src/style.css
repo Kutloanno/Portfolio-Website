@@ -1578,3 +1578,59 @@ body.light-theme .brand-invert {
     display: block !important;
     margin: 0 !important;
 }
+
+.live-commits-widget {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 320px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.commits-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--card-line);
+  padding-bottom: 8px;
+}
+.commits-header svg {
+  width: 16px;
+  height: 16px;
+  color: #ec4899; /* Pink activity pulse */
+}
+#commit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.commit-item {
+  font-family: 'Courier New', Courier, monospace; /* Terminal vibe */
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.commit-repo { color: #8b5cf6; font-weight: bold; }
+.commit-msg { color: var(--text-primary); }
+/* Hide on mobile so it doesn't clutter small screens */
+@media (max-width: 768px) {
+  .live-commits-widget { display: none; }
+}
